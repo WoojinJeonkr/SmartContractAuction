@@ -1,81 +1,89 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@3.0.0/dist/web3.min.js"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"
+		/>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@3.0.0/dist/web3.min.js"></script>
 
-  <link rel="stylesheet" href="../css/style.css">
-</head>
-<body onload="init()">
-  <div class="main-container">
-    <header class="app-header">
-      <h1>자동차 경매 DApp</h1>
-    </header>
+		<link rel="stylesheet" href="../css/style.css" />
+	</head>
+	<body>
+		<div class="main-container">
+			<header class="app-header">
+				<h1>자동차 경매 DApp</h1>
+			</header>
 
-    <div class="content-columns">
-      <section class="bid-section">
-        <div class="info-card">
-          <h2>차량 정보</h2>
-          <div class="car-details">
-            <p>브랜드: <span id="car_brand"></span></p>
-            <p>등록 번호: <span id="registration_number"></span></p>
-          </div>
-        </div>
+			<div class="content-columns">
+				<section class="bid-section">
+					<div class="info-card">
+						<h2>차량 정보</h2>
+						<div class="car-details">
+							<p>브랜드: <span id="car_brand"></span></p>
+							<p>등록 번호: <span id="registration_number"></span></p>
+						</div>
+					</div>
 
-        <div class="bid-form">
-          <h2>입찰 관리</h2>
-          <div class="form-group">
-            <input type="number" id="value" placeholder="ETH 단위로 입력 (예: 0.1)">
-            <div id="valueValidation" class="validation-message"></div>
-          </div>
-          <button class="action-btn" onclick="bid()">입찰하기</button>
-          <div id="biding_status" class="status-indicator"></div>
-        </div>
-      </section>
+					<div class="bid-form">
+						<h2>입찰 관리</h2>
+						<div class="form-group">
+							<input
+								type="number"
+								id="value"
+								placeholder="ETH 단위로 입력 (예: 0.1)"
+							/>
+							<div id="valueValidation" class="validation-message"></div>
+						</div>
+						<button class="action-btn" onclick="bid()">입찰하기</button>
+						<div id="biding_status" class="status-indicator"></div>
+					</div>
+				</section>
 
-      <section class="info-section">
-        <div class="auction-panel">
-          <h2>경매 현황</h2>
-          <ul class="auction-details">
-            <li>시작 시간: <span id="auction_start"></span></li>
-            <li>종료 시간: <span id="auction_end"></span></li>
-            <li>최고 입찰가: <span id="HighestBid"></span></li>
-            <li>최고 입찰자: <span id="HighestBidder"></span></li>
-            <li>경매 상태: <span id="STATE" class="status-badge"></span></li>
-          </ul>
-        </div>
+				<section class="info-section">
+					<div class="auction-panel">
+						<h2>경매 현황</h2>
+						<ul class="auction-details">
+							<li>시작 시간: <span id="auction_start"></span></li>
+							<li>종료 시간: <span id="auction_end"></span></li>
+							<li>최고 입찰가: <span id="HighestBid"></span></li>
+							<li>최고 입찰자: <span id="HighestBidder"></span></li>
+							<li>경매 상태: <span id="STATE" class="status-badge"></span></li>
+						</ul>
+					</div>
 
-        <div class="notification-panel">
-          <h3>실시간 알림</h3>
-          <div id="notifications"></div>
-        </div>
+					<div class="notification-panel">
+						<h3>실시간 알림</h3>
+						<div id="notifications"></div>
+					</div>
 
-        <div class="event-log">
-          <h2>이벤트 기록</h2>
-          <div id="eventslog" class="log-content"></div>
-        </div>
+					<div class="event-log">
+						<h2>이벤트 기록</h2>
+						<div id="eventslog" class="log-content"></div>
+					</div>
 
-        <div class="participants-list">
-          <h2>참여자 목록</h2>
-          <ul id="participants-list"></ul>
-        </div>
-      </section>
-    </div>
+					<div class="participants-list">
+						<h2>참여자 목록</h2>
+						<ul id="participants-list"></ul>
+					</div>
+				</section>
+			</div>
 
-    <div class="admin-panel" id="auction_owner_operations">
-      <h2>경매 운영 관리</h2><br>
-      <button class="admin-btn" onclick="cancel_auction()">경매 취소</button>
-      <div id="cancel_status" class="status-indicator"></div>
+			<div class="admin-panel" id="auction_owner_operations">
+				<h2>경매 운영 관리</h2>
+				<br />
+				<button class="admin-btn" onclick="cancel_auction()">경매 취소</button>
+				<div id="cancel_status" class="status-indicator"></div>
 
-      <button onclick="endAuction()" class="admin-btn">경매 종료</button>
-      <div id="end_status" class="status-indicator"></div>
-    </div>
-  </div>
-</body>
-<script src="./auction.js"></script>
+				<button onclick="endAuction()" class="admin-btn">경매 종료</button>
+				<div id="end_status" class="status-indicator"></div>
+			</div>
+		</div>
+		<script src="auction.js"></script>
+	</body>
 </html>

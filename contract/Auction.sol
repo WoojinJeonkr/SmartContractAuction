@@ -57,8 +57,6 @@ contract Auction {
 
 // Auction을 상속받아 실제 경매 로직을 구현한 MyAuction 컨트랙트
 contract MyAuction is Auction {
-    mapping(address => bool) private isParticipant;
-
     // 생성자: 경매 기간, 소유자, 차량 정보 입력받아 초기화
     constructor(uint _biddingTime, address _owner, string memory _brand, string memory _Rnumber) {
         auction_owner = _owner; // 경매 소유자 설정
@@ -78,50 +76,32 @@ contract MyAuction is Auction {
         return false;
     }
 
-    // 부모 컨트랙트의 bid 함수 재정의 (override)
+    // bid 함수 수정: 누적 입찰이 아닌, 각 입찰마다 새로운 금액만 인정
     function bid() public payable override an_ongoing_auction returns (bool) {
         // 경매가 활성 상태인지 확인
         require(STATE == auction_state.ACTIVATED, "Auction not active");
-        
-        // 경매 종료 시간이 지나지 않았는지 확인
         require(block.timestamp <= auction_end, "Auction already ended");
+        require(msg.value > highestBid, "Bid must exceed current highest");
 
-        // 새 입찰의 총액 계산 (기존 입찰액 + 새로운 입찰액)
-        uint256 currentBid = bids[msg.sender];
-        uint256 newTotalBid = currentBid + msg.value;
-
-        // 새 입찰이 현재 최고 입찰보다 높은지 확인
-        require(newTotalBid > highestBid, "Bid must exceed current highest");
-
-        // 이전 최고 입찰자 기록
-        address previousBidder = highestBidder;
-        uint256 previousBid = highestBid;
-
-        // 상태 업데이트
-        highestBidder = msg.sender;
-        highestBid = newTotalBid;
-        bids[msg.sender] = newTotalBid;
-
-        // 자동 환불 처리
-        if (previousBidder != address(0)) {
-            (bool success, ) = previousBidder.call{value: previousBid}("");
-            if (success) {
-                emit RefundEvent(previousBidder, previousBid, block.timestamp);
+        // 이전 최고 입찰자 환불
+        if (highestBidder != address(0)) {
+            (bool success, ) = payable(highestBidder).call{value: highestBid}("");
+            if (!success) {
+                pendingReturns[highestBidder] += highestBid;
             } else {
-                pendingReturns[previousBidder] += previousBid;
+                emit RefundEvent(highestBidder, highestBid, block.timestamp);
             }
         }
 
-        require(!isParticipant[msg.sender], "Already participated");
-        isParticipant[msg.sender] = true;
+        highestBidder = msg.sender;
+        highestBid = msg.value;
 
         // 중복 확인 후 bidders 배열에 추가
         if (!addressHasBid(msg.sender)) {
             bidders.push(msg.sender);
         }
 
-        // 이벤트 발생
-        emit BidEvent(msg.sender, newTotalBid);
+        emit BidEvent(msg.sender, msg.value);
         return true;
     }
 
