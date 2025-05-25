@@ -1,0 +1,314 @@
+/* styles.css */
+/* 기본 리셋 및 글로벌 스타일 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Noto Sans KR', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  background: #f8f9fa;
+  color: #2e3a59;
+  line-height: 1.6;
+}
+
+/* 레이아웃 구조 */
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.content-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-top: 25px;
+}
+
+/* 헤더 스타일링 */
+.app-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 3px solid #007bff;
+  margin-bottom: 2rem;
+}
+
+.app-header h1 {
+  font-size: 2.5rem;
+  color: #2e3a59;
+  font-weight: 700;
+}
+
+/* 카드형 컴포넌트 */
+.info-card, .bid-form, .auction-panel {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+/* 폼 요소 스타일링 */
+.bid-form input {
+  width: 100%;
+  padding: 12px;
+  border: 2px solid #e3e6f0;
+  border-radius: 8px;
+  margin: 15px 0;
+  font-size: 1rem;
+}
+
+/* 버튼 디자인 */
+.action-btn, .admin-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  font-size: 1.1rem;
+}
+
+.action-btn:hover, .admin-btn:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+}
+
+/* 상태 표시기 */
+.status-indicator {
+  padding: 10px;
+  margin-top: 15px;
+  border-radius: 6px;
+  background: #f8f9fa;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .content-columns {
+    grid-template-columns: 1fr;
+  }
+  
+  .main-container {
+    padding: 10px;
+  }
+  
+  .app-header h1 {
+    font-size: 2rem;
+  }
+}
+
+/* 애니메이션 효과 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.info-card, .bid-form {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* 특수 컴포넌트 */
+.auction-details li {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.event-log {
+  margin-top: 25px;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.event-log h2 {
+  color: #2e3a59;
+  font-size: 1.3em;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e3e6f0;
+}
+
+#eventslog {
+  background: #f8f9fa;
+  border: 1px solid #e3e6f0;
+  border-radius: 6px;
+  padding: 15px;
+  min-height: 100px;
+  max-height: 200px;
+  overflow-y: auto;
+  font-family: 'Roboto Mono', monospace;
+  font-size: 0.9em;
+  color: #4a5568;
+  line-height: 1.6;
+}
+
+#eventslog:empty::before {
+  content: "이벤트 기록이 없습니다";
+  color: #a0aec0;
+  font-style: italic;
+}
+
+.event-entry {
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  background: white;
+  border-radius: 4px;
+  border-left: 3px solid #007bff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  transition: all 0.2s ease;
+}
+
+.event-entry:hover {
+  transform: translateX(5px);
+  border-left-color: #0056b3;
+}
+
+/* 이벤트 타입별 색상 구분 */
+.event-bid {
+  border-left-color: #48bb78;
+}
+
+.event-cancel {
+  border-left-color: #f56565;
+}
+
+.event-withdraw {
+  border-left-color: #9f7aea;
+}
+
+.participants-list {
+  max-height: 250px;
+  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  margin-top: 15px;
+  border: 1px solid #e9ecef;
+}
+
+.participants-list h2 {
+  color: #2e3a59;
+  font-size: 1.3em;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e3e6f0;
+}
+
+#participants-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#participants-list li {
+  padding: 10px 12px;
+  margin: 8px 0;
+  background: linear-gradient(to right, #f8f9fa, #ffffff);
+  border-radius: 8px;
+  border-left: 3px solid #007bff;
+  transition: all 0.2s ease;
+  font-family: 'Roboto Mono', monospace;
+  display: flex;
+  align-items: center;
+}
+
+#participants-list li:before {
+  content: "👤";
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+#participants-list li:hover {
+  transform: translateX(5px);
+  background: linear-gradient(to right, #e9f5ff, #ffffff);
+  box-shadow: 0 2px 4px rgba(0,123,255,0.1);
+}
+
+/* 빈 목록에 대한 스타일 */
+#participants-list:empty:after {
+  content: "참여자가 없습니다";
+  display: block;
+  text-align: center;
+  color: #adb5bd;
+  padding: 20px 0;
+  font-style: italic;
+}
+
+.refund-alert {
+  background: #fff3cd;
+  border-left: 4px solid #ffc107;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+}
+
+.refund-alert button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+}
+
+/* 환불 이벤트 스타일 */
+.event-refund {
+  border-left-color: #e48b17;
+  background: linear-gradient(90deg, rgba(52,152,219,0.1) 0%, rgba(255,255,255,1) 30%);
+}
+
+.event-refund:hover {
+  border-left-color: #2980b9;
+  box-shadow: 1px 1px 3px rgba(52,152,219,0.2);
+}
+
+/* 애니메이션 효과 추가 */
+@keyframes refundPulse {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(5px); }
+  100% { transform: translateX(0); }
+}
+
+.event-refund {
+  animation: refundPulse 0.5s ease-in-out;
+}
+
+.event-end {
+  border-left-color: #3498db;
+  background: linear-gradient(90deg, rgba(52,152,219,0.1) 0%, rgba(255,255,255,1) 30%);
+}
+
+.event-end:hover {
+  border-left-color: #2980b9;
+  box-shadow: 1px 1px 3px rgba(52,152,219,0.2);
+}
+
+.auction-status {
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.state-ongoing {
+  background: #c8e6c9;
+  color: #2e7d32;
+}
+
+.state-ended {
+  background: #b3e5fc;
+  color: #01579b;
+}
+
+.state-cancelled {
+  background: #ffcdd2;
+  color: #c62828;
+}
